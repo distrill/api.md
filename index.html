@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>API.md</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+
+      <!-- left side, user input -->
+      <div class="input half-wrapper">
+        <form onsubmit="return format()">
+          <textarea id="user-text-input" class="user-text-input"></textarea>
+          <input class="submit" type="submit">
+        </form>
+      </div>
+
+      <!-- right side, formatted output -->
+      <div class="output half-wrapper">
+        <pre id="formatted-output" onclick="selectText()">
+        </pre>
+      </div>
+
+    </div>
+  </body>
+</html>
