@@ -7,18 +7,24 @@
   <body>
     <div class="wrapper">
 
+      <div class="title">
+        APIdocs . markdown
+      </div>
+
       <!-- left side, user input -->
       <div class="input half-wrapper">
         <form onsubmit="return format()">
-          <textarea id="user-text-input" class="user-text-input"></textarea>
-          <input class="submit" type="submit">
+          <textarea id="user-text-input" class="text-content user-text-input"></textarea>
+          <input class="submit" type="submit" value="GO!">
         </form>
       </div>
 
       <!-- right side, formatted output -->
       <div class="output half-wrapper">
-        <pre id="formatted-output" onclick="selectText()">
-        </pre>
+        <div class="pre-wrapper">
+          <pre class="text-content" id="formatted-output" onclick="selectText()">
+          </pre>
+        </div>
       </div>
 
     </div>

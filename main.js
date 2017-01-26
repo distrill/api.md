@@ -20,49 +20,53 @@ function removeFirstWord(string) {
     .join(' ');
 }
 
-function formatDesc(lines) {
-  const descLine = lines.filter(line => line.split(' ')[0] === 'desc:')[0];
-  const desc = removeFirstWord(descLine);
-  if (!desc) return '';
-  return `${desc}\n`;
-}
+class Lines {
+  constructor(content) {
+    this.content = content;
+  }
 
-function formatTitle(lines) {
-  const titleLine = lines.filter(line => line.split(' ')[0] === 'title:')[0];
-  const title = removeFirstWord(titleLine);
-  if (!title) return '';
-  return `### ${title}`;
-}
+  _find(match) {
+    return this.content.filter(e => e.split(' ')[0] === match);
+  }
 
-function formatPath(lines) {
-  const pathLine = lines.filter(line => line.split(' ')[0] === 'path:')[0];
-  const path = removeFirstWord(pathLine);
-  if (!path) return '';
-  return `\`${path}\``;
-}
+  _format(match, mutate) {
+    const line = this._find(match)[0];
+    if (line && line.length) return mutate(removeFirstWord(line));
+    return '';
+  }
 
-function formatParams(lines) {
-  const paramLines = lines.filter(line => line.split(' ')[0] === 'param:');
-  const params = paramLines.map(removeFirstWord);
-  if (!params.length) return '';
-  const paramsHeader = '| Field | Type | Description |\n| ----- | ---- | ----------- |';
-  paramsContent = params.map((param) => {
-    return `| ${param.split(' || ').join('|')} |`;
-  });
-  return [paramsHeader, ...paramsContent].join('\n');
+  formatDesc() {
+    return this._format('desc:', (e) => `${e}\n`);
+  }
+
+  formatTitle() {
+    return this._format('title:', (e) => `### ${e}`);
+  }
+
+  formatPath() {
+    return this._format('path:', (e) => `\`${e}\``);
+  }
+  
+  formatParams(sep = '||') {
+    const params = this._find('param:').map(removeFirstWord);
+    const header = '| Field | Type | Description |\n| ----- | ---- | ----------- |';
+    if (!params.length) return '';
+    const content = params.map((param) => {
+      return `| ${param.split(sep).join('|')} |`;
+    });
+    return [header, ...content].join('\n');
+  }
 }
 
 function formatBlock(block) {
-  const lines = block.split('\n');
+  const lines = new Lines(block.split('\n'));
   const result = [
     '---',
-    formatTitle(lines),
-    formatDesc(lines),
-    formatPath(lines),
-    formatParams(lines),
+    lines.formatTitle(),
+    lines.formatDesc(),
+    lines.formatPath(),
+    lines.formatParams(),
   ].join('  \n');
-
-  console.log(result);
 
   return result;
 }
